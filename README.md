@@ -14,7 +14,8 @@ Es el gemelo de [`rn-social-login`](https://github.com/franciscodlx/rn-social-lo
 | [`social_auth_core_ios`](packages/social_auth_core_ios)                               | Implementación iOS (Swift Package Manager y CocoaPods)              | —                        |
 | [`social_auth_linkedin`](packages/social_auth_linkedin)                               | LinkedIn (OpenID Connect), canje en tu backend                      | Probado contra el mock   |
 | [`social_auth_x`](packages/social_auth_x)                                             | X (Twitter), cliente público con PKCE, refresh y revocación         | Probado contra el mock   |
-| Mercado Libre, Twitch, presets, Telegram, TikTok, Entra                               | Un paquete Dart por proveedor sobre el núcleo                       | Pendiente                |
+| [`social_auth_mercadolibre`](packages/social_auth_mercadolibre)                       | Mercado Libre (host por país, PKCE), canje en tu backend            | Probado contra el mock   |
+| Twitch, presets, Telegram, TikTok, Entra                                              | Un paquete Dart por proveedor sobre el núcleo                       | Pendiente                |
 
 El núcleo es un plugin federado: la app solo depende de `social_auth_core`, que trae las implementaciones de cada plataforma.
 

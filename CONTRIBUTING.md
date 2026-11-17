@@ -19,6 +19,7 @@ En el emulador de Android el ejemplo llega al proveedor local por `10.0.2.2`; en
 | --------------------------------------- | --------------------------------------------------- | -------------------------------------------------------------------------------- |
 | `packages/social_auth_linkedin/example` | `tools/mock_idp` + `tools/linkedin_backend` (4100)  | Aprobar → `SIGNED IN`, `id_token verified: true`; rechazar o cerrar → `CANCELLED` |
 | `packages/social_auth_x/example`        | `tools/mock_idp`                                    | "Sign in + profile" → perfil, email y `refresh token: true`; "Refresh token" → `REFRESHED`; "Sign out" → `SIGNED OUT`; rechazar o cerrar → `CANCELLED` |
+| `packages/social_auth_mercadolibre/example` | `tools/mock_idp` + `tools/mercadolibre_backend` (4200) | Aprobar → `SIGNED IN`, `site: MLM`, `refresh token on backend: true`; rechazar o cerrar → `CANCELLED` |
 
 Si en el mismo emulador está instalado el ejemplo equivalente de `rn-social-login`, ambos registran el mismo esquema y Android muestra "Abrir con…" al volver del navegador.
 
