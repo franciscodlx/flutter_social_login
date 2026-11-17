@@ -6,6 +6,8 @@
 flutter pub get
 ```
 
+Las pruebas de `social_auth_entra_native` arrancan `tools/mock_entra`, así que `dart run melos run test` necesita Node ≥ 22.
+
 ## Correr el ejemplo
 
 1. Proveedor local (Node ≥ 22): `node tools/mock_idp/server.mjs`. Con `MOCK_IDP_AUTO=approve` redirige sin mostrar la pantalla de consentimiento; con `MOCK_IDP_AUTO=deny` siempre rechaza.
@@ -24,10 +26,11 @@ En el emulador de Android el ejemplo llega al proveedor local por `10.0.2.2`; en
 | `packages/social_auth_presets/example`  | `tools/mock_idp` + `tools/presets_backend` (4400)   | Cada botón, aprobar → `SIGNED IN (<proveedor>)` con perfil; rechazar o cerrar → `CANCELLED` |
 | `packages/social_auth_telegram/example` | `tools/mock_idp` + `tools/telegram_backend` (4500)  | Aprobar → `SIGNED IN` con teléfono, `id_token verified by backend: true`; rechazar o cerrar → `CANCELLED` |
 | `packages/social_auth_tiktok/example`   | `tools/mock_idp` + `tools/tiktok_backend` (4600)    | Aprobar → `SIGNED IN`, `granted scopes: user.info.basic`; rechazar o cerrar → `CANCELLED` |
+| `packages/social_auth_entra_native/example` | `tools/mock_entra` (4700, código `12345678`)    | "Sign in" → `SIGNED IN` y refresh; "Use a new demo email" + "Sign up" + "Submit code" → `SIGNED IN`; "Reset password" → código → nueva contraseña → `SIGNED IN`; contraseña incorrecta → `FAILED: invalid_grant` |
 
 Si en el mismo emulador está instalado el ejemplo equivalente de `rn-social-login`, ambos registran el mismo esquema y Android muestra "Abrir con…" al volver del navegador.
 
-Los backends de `tools/` arrancan con `node tools/<nombre>/server.mjs` y sus pruebas con `node --test` dentro de su carpeta.
+Los servidores de `tools/` arrancan con `node tools/<nombre>/server.mjs` (`server.js` en `mock_entra`) y sus pruebas con `node --test` dentro de su carpeta.
 
 ## Agregar un proveedor
 
@@ -58,4 +61,4 @@ dart run pigeon --input pigeon/messages.dart
 - Commits con [Conventional Commits](https://www.conventionalcommits.org/): `feat(core): …`, `fix(android): …`.
 - Documentación en español; identificadores y comentarios de código en inglés.
 - `dart format .` y `dart analyze --fatal-infos .` deben pasar.
-- `tools/mock_idp` y `tools/*_backend` son copias de `examples/mock-idp` y `examples/*-backend` de `rn-social-login`: si cambias una, cambia la otra.
+- `tools/mock_idp`, `tools/mock_entra` y `tools/*_backend` son copias de `examples/mock-idp`, `examples/mock-entra` y `examples/*-backend` de `rn-social-login`: si cambias una, cambia la otra.

@@ -1,0 +1,6 @@
+{
+  "name": "mock-entra",
+  "private": true,
+  "description": "Local stand-in for the Microsoft Entra External ID native authentication API, for social_auth_entra_native's tests and example app. Copied from rn-social-login/examples/mock-entra; keep both in sync.",
+  "scripts": { "start": "node server.js", "test": "node --test" }
+}

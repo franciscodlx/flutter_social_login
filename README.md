@@ -19,7 +19,7 @@ Es el gemelo de [`rn-social-login`](https://github.com/franciscodlx/rn-social-lo
 | [`social_auth_presets`](packages/social_auth_presets)                                 | GitHub, Discord, Slack y Strava, canje en tu backend                | Probado contra el mock   |
 | [`social_auth_telegram`](packages/social_auth_telegram)                               | Telegram (OpenID Connect + PKCE), canje en tu backend               | Probado contra el mock   |
 | [`social_auth_tiktok`](packages/social_auth_tiktok)                                   | TikTok (Login Kit, flujo web), canje en tu backend                  | Probado contra el mock   |
-| Entra                                                                                 | Un paquete Dart por proveedor sobre el núcleo                       | Pendiente                |
+| [`social_auth_entra_native`](packages/social_auth_entra_native)                       | Entra External ID native auth (pantallas propias, sin navegador)    | Probado contra el mock   |
 
 El núcleo es un plugin federado: la app solo depende de `social_auth_core`, que trae las implementaciones de cada plataforma.
 
@@ -32,6 +32,7 @@ packages/social_auth_core_android             Kotlin
 packages/social_auth_core_ios                 Swift
 packages/social_auth_<proveedor>              un paquete Dart por proveedor + app de ejemplo
 tools/mock_idp                                proveedor OIDC local para probar sin credenciales
+tools/mock_entra                              API de native auth de Entra, local
 tools/<proveedor>_backend                     backend de ejemplo (redirect https + canje con secret)
 ```
 
@@ -39,7 +40,7 @@ Los paquetes de proveedor son Dart puro: no agregan código nativo. `package:soc
 
 ## Desarrollo
 
-Requiere Flutter ≥ 3.35 (probado con 3.50). Es un workspace de pub con [Melos](https://melos.invertase.dev).
+Requiere Flutter ≥ 3.35 (probado con 3.50) y Node ≥ 22 para los servidores de `tools/`. Es un workspace de pub con [Melos](https://melos.invertase.dev).
 
 ```sh
 flutter pub get        # resuelve todo el workspace
