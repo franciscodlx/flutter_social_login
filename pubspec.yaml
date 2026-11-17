@@ -17,6 +17,8 @@ workspace:
   - packages/social_auth_x/example
   - packages/social_auth_mercadolibre
   - packages/social_auth_mercadolibre/example
+  - packages/social_auth_twitch
+  - packages/social_auth_twitch/example
 
 dev_dependencies:
   melos: ^7.0.0

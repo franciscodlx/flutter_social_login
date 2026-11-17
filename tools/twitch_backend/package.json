@@ -1,0 +1,7 @@
+{
+  "name": "twitch-backend",
+  "private": true,
+  "type": "module",
+  "description": "Example backend for social_auth_twitch: https redirect bounce, code exchange with the client secret and id_token (signature + nonce) verification. Copied from rn-social-login/examples/twitch-backend; keep both in sync.",
+  "scripts": { "start": "node server.mjs", "test": "node --test" }
+}
