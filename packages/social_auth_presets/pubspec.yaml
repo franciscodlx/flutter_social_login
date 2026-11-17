@@ -1,0 +1,22 @@
+name: social_auth_presets
+description: Sign in with GitHub, Discord, Slack and Strava for Flutter in the system browser, with the code exchange on your backend and no client secret in the app.
+version: 0.1.0
+repository: https://github.com/franciscodlx/flutter_social_login
+issue_tracker: https://github.com/franciscodlx/flutter_social_login/issues
+topics: [oauth, github, discord, slack, strava]
+resolution: workspace
+
+environment:
+  sdk: ^3.14.0
+  flutter: '>=3.35.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  http: ^1.2.2
+  social_auth_core: ^0.1.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0

@@ -1,0 +1,7 @@
+{
+  "name": "presets-backend",
+  "private": true,
+  "type": "module",
+  "description": "Example backend for social_auth_presets: https redirect bounce and code exchange for GitHub, Discord, Slack and Strava. Copied from rn-social-login/examples/presets-backend; keep both in sync.",
+  "scripts": { "start": "node server.mjs", "test": "node --test" }
+}
