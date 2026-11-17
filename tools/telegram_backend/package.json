@@ -1,0 +1,7 @@
+{
+  "name": "telegram-backend",
+  "private": true,
+  "type": "module",
+  "description": "Example backend for social_auth_telegram: https redirect bounce, code exchange with the client secret (HTTP Basic + PKCE) and id_token verification. Copied from rn-social-login/examples/telegram-backend; keep both in sync.",
+  "scripts": { "start": "node server.mjs", "test": "node --test" }
+}

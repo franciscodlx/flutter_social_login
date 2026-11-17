@@ -17,7 +17,8 @@ Es el gemelo de [`rn-social-login`](https://github.com/franciscodlx/rn-social-lo
 | [`social_auth_mercadolibre`](packages/social_auth_mercadolibre)                       | Mercado Libre (host por país, PKCE), canje en tu backend            | Probado contra el mock   |
 | [`social_auth_twitch`](packages/social_auth_twitch)                                   | Twitch (OpenID Connect, `nonce`, `claims`), canje en tu backend     | Probado contra el mock   |
 | [`social_auth_presets`](packages/social_auth_presets)                                 | GitHub, Discord, Slack y Strava, canje en tu backend                | Probado contra el mock   |
-| Telegram, TikTok, Entra                                                               | Un paquete Dart por proveedor sobre el núcleo                       | Pendiente                |
+| [`social_auth_telegram`](packages/social_auth_telegram)                               | Telegram (OpenID Connect + PKCE), canje en tu backend               | Probado contra el mock   |
+| TikTok, Entra                                                                         | Un paquete Dart por proveedor sobre el núcleo                       | Pendiente                |
 
 El núcleo es un plugin federado: la app solo depende de `social_auth_core`, que trae las implementaciones de cada plataforma.
 
