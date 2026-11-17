@@ -11,6 +11,8 @@ workspace:
   - packages/social_auth_core_platform_interface
   - packages/social_auth_core_android
   - packages/social_auth_core_ios
+  - packages/social_auth_linkedin
+  - packages/social_auth_linkedin/example
 
 dev_dependencies:
   melos: ^7.0.0

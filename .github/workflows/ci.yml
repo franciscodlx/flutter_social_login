@@ -35,12 +35,19 @@ jobs:
       - uses: actions/setup-node@v7
         with:
           node-version: 22
-      - run: node --test
-        working-directory: tools/mock_idp
+      - name: Local servers (mock provider and example backends)
+        run: |
+          for tool in tools/*; do
+            (cd "$tool" && node --test)
+          done
 
   android:
-    name: Example (Android)
+    name: Example ${{ matrix.example }} (Android)
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        example: [social_auth_core, social_auth_linkedin]
     steps:
       - uses: actions/checkout@v7
       - uses: actions/setup-java@v6
@@ -53,11 +60,15 @@ jobs:
           cache: true
       - run: flutter pub get
       - run: flutter build apk --debug
-        working-directory: packages/social_auth_core/example
+        working-directory: packages/${{ matrix.example }}/example
 
   ios:
-    name: Example (iOS)
+    name: Example ${{ matrix.example }} (iOS)
     runs-on: macos-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        example: [social_auth_core, social_auth_linkedin]
     steps:
       - uses: actions/checkout@v7
       - uses: subosito/flutter-action@v2
@@ -66,4 +77,4 @@ jobs:
           cache: true
       - run: flutter pub get
       - run: flutter build ios --simulator --debug
-        working-directory: packages/social_auth_core/example
+        working-directory: packages/${{ matrix.example }}/example

@@ -13,6 +13,20 @@ flutter pub get
 
 En el emulador de Android el ejemplo llega al proveedor local por `10.0.2.2`; en el simulador de iOS, por `localhost`.
 
+### Ejemplos de proveedor
+
+| Ejemplo                                 | Servicios locales                                   | Casos                                                                            |
+| --------------------------------------- | --------------------------------------------------- | -------------------------------------------------------------------------------- |
+| `packages/social_auth_linkedin/example` | `tools/mock_idp` + `tools/linkedin_backend` (4100)  | Aprobar → `SIGNED IN`, `id_token verified: true`; rechazar o cerrar → `CANCELLED` |
+
+Los backends de `tools/` arrancan con `node tools/<nombre>/server.mjs` y sus pruebas con `node --test` dentro de su carpeta.
+
+## Agregar un proveedor
+
+1. `packages/social_auth_<proveedor>` con `lib/`, `test/`, `README.md`, `CHANGELOG.md`, `LICENSE` (copiar la estructura de `social_auth_linkedin`).
+2. `flutter create --template=app --org dev.franciscodlx.socialauth --platforms=android,ios --project-name social_auth_<proveedor>_example packages/social_auth_<proveedor>/example`, borrar `.idea`, `*.iml`, `pubspec.lock` y la prueba de plantilla, y agregar `manifestPlaceholders["authCoreRedirectScheme"]`.
+3. Agregar ambos al `workspace:` del `pubspec.yaml` raíz y la matriz de ejemplos en `.github/workflows/ci.yml`.
+
 ## Qué probar en dispositivo antes de abrir un PR
 
 | Caso                           | Resultado esperado                           |
@@ -36,4 +50,4 @@ dart run pigeon --input pigeon/messages.dart
 - Commits con [Conventional Commits](https://www.conventionalcommits.org/): `feat(core): …`, `fix(android): …`.
 - Documentación en español; identificadores y comentarios de código en inglés.
 - `dart format .` y `dart analyze --fatal-infos .` deben pasar.
-- `tools/mock_idp` es una copia de `examples/mock-idp` de `rn-social-login`: si cambias una, cambia la otra.
+- `tools/mock_idp` y `tools/*_backend` son copias de `examples/mock-idp` y `examples/*-backend` de `rn-social-login`: si cambias una, cambia la otra.

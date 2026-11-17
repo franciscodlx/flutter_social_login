@@ -1,0 +1,7 @@
+{
+  "name": "linkedin-backend",
+  "private": true,
+  "type": "module",
+  "description": "Example backend for social_auth_linkedin: https redirect bounce and code exchange with the client secret. Copied from rn-social-login/examples/linkedin-backend; keep both in sync.",
+  "scripts": { "start": "node server.mjs", "test": "node --test" }
+}
