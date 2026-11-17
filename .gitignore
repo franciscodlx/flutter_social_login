@@ -1,0 +1,21 @@
+.DS_Store
+.dart_tool/
+.idea/
+*.iml
+.vscode/
+build/
+coverage/
+doc/api/
+.flutter-plugins
+.flutter-plugins-dependencies
+.build/
+.swiftpm/
+local.properties
+node_modules/
+# Lockfiles: only the workspace root and the example apps keep theirs.
+packages/*/pubspec.lock
+
+# Secrets
+.env
+.env.*
+!.env.example

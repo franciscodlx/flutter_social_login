@@ -1,0 +1,32 @@
+name: social_auth_core
+description: Shared core of the social login plugins. OAuth 2.0 authorization code + PKCE in the system browser, with normalized errors and no client secret in the app.
+version: 0.1.0
+repository: https://github.com/franciscodlx/flutter_social_login
+resolution: workspace
+
+environment:
+  sdk: ^3.14.0
+  flutter: '>=3.35.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  crypto: ^3.0.6
+  http: ^1.2.2
+  social_auth_core_android: ^0.1.0
+  social_auth_core_ios: ^0.1.0
+  social_auth_core_platform_interface: ^0.1.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+  plugin_platform_interface: ^2.0.2
+
+flutter:
+  plugin:
+    platforms:
+      android:
+        default_package: social_auth_core_android
+      ios:
+        default_package: social_auth_core_ios

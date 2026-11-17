@@ -1,0 +1,29 @@
+name: social_auth_core_android
+description: Android implementation of social_auth_core. Runs the sign-in in a Custom Tab.
+version: 0.1.0
+repository: https://github.com/franciscodlx/flutter_social_login
+resolution: workspace
+
+environment:
+  sdk: ^3.14.0
+  flutter: '>=3.35.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  social_auth_core_platform_interface: ^0.1.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+  pigeon: ^29.0.1
+
+flutter:
+  plugin:
+    implements: social_auth_core
+    platforms:
+      android:
+        package: dev.franciscodlx.social_auth_core_android
+        pluginClass: SocialAuthCoreAndroidPlugin
+        dartPluginClass: SocialAuthCoreAndroid

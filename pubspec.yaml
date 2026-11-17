@@ -1,0 +1,27 @@
+name: flutter_social_login_workspace
+description: Social login plugins for Flutter on a shared core (system browser, OAuth 2.0 + PKCE).
+publish_to: none
+
+environment:
+  sdk: ^3.14.0
+
+workspace:
+  - packages/social_auth_core
+  - packages/social_auth_core/example
+  - packages/social_auth_core_platform_interface
+  - packages/social_auth_core_android
+  - packages/social_auth_core_ios
+
+dev_dependencies:
+  melos: ^7.0.0
+
+melos:
+  scripts:
+    analyze:
+      run: dart analyze --fatal-infos .
+      description: Static analysis of every package.
+    test:
+      run: dart run melos exec --dir-exists=test -- flutter test
+      description: Unit tests of every package.
+    format:
+      run: dart format --set-exit-if-changed .

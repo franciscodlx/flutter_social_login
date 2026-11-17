@@ -1,0 +1,7 @@
+{
+  "name": "mock-idp",
+  "private": true,
+  "type": "module",
+  "description": "Local OAuth 2.0 / OpenID Connect provider for the example apps. Copied from rn-social-login/examples/mock-idp; keep both in sync.",
+  "scripts": { "start": "node server.mjs", "test": "node --test" }
+}
