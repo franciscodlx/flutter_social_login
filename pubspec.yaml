@@ -23,6 +23,8 @@ workspace:
   - packages/social_auth_presets/example
   - packages/social_auth_telegram
   - packages/social_auth_telegram/example
+  - packages/social_auth_tiktok
+  - packages/social_auth_tiktok/example
 
 dev_dependencies:
   melos: ^7.0.0

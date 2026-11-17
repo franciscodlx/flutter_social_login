@@ -1,0 +1,7 @@
+{
+  "name": "tiktok-backend",
+  "private": true,
+  "type": "module",
+  "description": "Example backend for social_auth_tiktok: https redirect bounce and code exchange with the client key and secret. Copied from rn-social-login/examples/tiktok-backend; keep both in sync.",
+  "scripts": { "start": "node server.mjs", "test": "node --test" }
+}

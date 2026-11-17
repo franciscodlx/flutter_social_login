@@ -23,6 +23,7 @@ En el emulador de Android el ejemplo llega al proveedor local por `10.0.2.2`; en
 | `packages/social_auth_twitch/example`   | `tools/mock_idp` + `tools/twitch_backend` (4300)    | Aprobar → `SIGNED IN`, email verificado, `id_token verified (signature + nonce): true`; rechazar o cerrar → `CANCELLED` |
 | `packages/social_auth_presets/example`  | `tools/mock_idp` + `tools/presets_backend` (4400)   | Cada botón, aprobar → `SIGNED IN (<proveedor>)` con perfil; rechazar o cerrar → `CANCELLED` |
 | `packages/social_auth_telegram/example` | `tools/mock_idp` + `tools/telegram_backend` (4500)  | Aprobar → `SIGNED IN` con teléfono, `id_token verified by backend: true`; rechazar o cerrar → `CANCELLED` |
+| `packages/social_auth_tiktok/example`   | `tools/mock_idp` + `tools/tiktok_backend` (4600)    | Aprobar → `SIGNED IN`, `granted scopes: user.info.basic`; rechazar o cerrar → `CANCELLED` |
 
 Si en el mismo emulador está instalado el ejemplo equivalente de `rn-social-login`, ambos registran el mismo esquema y Android muestra "Abrir con…" al volver del navegador.
 
