@@ -1,0 +1,23 @@
+name: social_auth_x
+description: Sign in with X (Twitter) for Flutter using OAuth 2.0 + PKCE in the system browser, as a public client with no consumer secret in the app.
+version: 0.1.0
+repository: https://github.com/franciscodlx/flutter_social_login
+issue_tracker: https://github.com/franciscodlx/flutter_social_login/issues
+topics: [twitter, oauth, pkce, login, authentication]
+resolution: workspace
+
+environment:
+  sdk: ^3.14.0
+  flutter: '>=3.35.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  http: ^1.2.2
+  social_auth_core: ^0.1.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  crypto: ^3.0.6
+  flutter_lints: ^6.0.0
