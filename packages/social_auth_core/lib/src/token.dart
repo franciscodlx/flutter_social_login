@@ -83,9 +83,14 @@ Future<Map<String, dynamic>> _send(
 
   final ok = response.statusCode >= 200 && response.statusCode < 300;
   if (!ok || body['error'] is String) {
-    final providerError = _string(body['error']);
+    // OAuth errors use `error`/`error_description`; REST APIs such as X's
+    // return problem details (`title`, `detail`, `reason`) instead.
+    final providerError = _string(body['error']) ?? _string(body['reason']);
     final description =
-        _string(body['error_description']) ?? _string(body['message']);
+        _string(body['error_description']) ??
+        _string(body['message']) ??
+        _string(body['detail']) ??
+        _string(body['title']);
     throw AuthException(
       AuthErrorCode.providerError,
       description ??

@@ -12,7 +12,7 @@ Es el gemelo de [`rn-social-login`](https://github.com/franciscodlx/rn-social-lo
 | [`social_auth_core_platform_interface`](packages/social_auth_core_platform_interface) | Interfaz de plataforma y `AuthException`                            | —                        |
 | [`social_auth_core_android`](packages/social_auth_core_android)                       | Implementación Android (Custom Tabs)                                | —                        |
 | [`social_auth_core_ios`](packages/social_auth_core_ios)                               | Implementación iOS (Swift Package Manager y CocoaPods)              | —                        |
-| [`social_auth_linkedin`](packages/social_auth_linkedin)                               | LinkedIn (OpenID Connect), canje en tu backend                      | Probado contra el mock   |
+| [`social_auth_linkedin`](packages/social_auth_linkedin)                               | LinkedIn (OpenID Connect), canje en tu backend                      | Probado con LinkedIn     |
 | [`social_auth_x`](packages/social_auth_x)                                             | X (Twitter), cliente público con PKCE, refresh y revocación         | Probado contra el mock   |
 | [`social_auth_mercadolibre`](packages/social_auth_mercadolibre)                       | Mercado Libre (host por país, PKCE), canje en tu backend            | Probado contra el mock   |
 | [`social_auth_twitch`](packages/social_auth_twitch)                                   | Twitch (OpenID Connect, `nonce`, `claims`), canje en tu backend     | Probado contra el mock   |

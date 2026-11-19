@@ -169,6 +169,33 @@ void main() {
       ),
     );
 
+    // REST APIs such as X's answer with problem details instead.
+    final notEnrolled = MockClient(
+      (_) async => json({
+        'title': 'Client Forbidden',
+        'detail':
+            'This request must be made using an approved developer account.',
+        'reason': 'client-not-enrolled',
+      }, 403),
+    );
+    await expectLater(
+      fetchUserInfo('https://api.test/2/users/me', 'at', client: notEnrolled),
+      throwsA(
+        isA<AuthException>()
+            .having(
+              (e) => e.providerError,
+              'providerError',
+              'client-not-enrolled',
+            )
+            .having(
+              (e) => e.message,
+              'message',
+              'This request must be made using an approved developer account.',
+            )
+            .having((e) => e.status, 'status', 403),
+      ),
+    );
+
     final offline = MockClient(
       (_) async => throw http.ClientException('offline'),
     );

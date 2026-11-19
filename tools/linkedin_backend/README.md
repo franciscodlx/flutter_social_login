@@ -19,7 +19,14 @@ node tools/linkedin_backend/server.mjs
 ## Con LinkedIn real
 
 1. Crea la app en <https://www.linkedin.com/developers/apps> y agrega el producto "Sign In with LinkedIn using OpenID Connect".
-2. Expón este servidor por https (Cloudflare Tunnel, ngrok).
+2. Expón este servidor por https. Lo más rápido es un túnel temporal de Cloudflare (`brew install cloudflared`):
+
+   ```sh
+   cloudflared tunnel --url http://localhost:4100
+   ```
+
+   La URL `https://….trycloudflare.com` que imprime es tu `PUBLIC_URL`. Cambia cada vez que reinicias el túnel, y entonces hay que registrarla de nuevo en LinkedIn.
+
 3. En Auth → "Authorized redirect URLs" registra `<PUBLIC_URL>/auth/linkedin/callback`.
 4. Copia `.env.example` a `.env`, complétalo y arranca con `node --env-file=.env server.mjs`.
 5. Corre el ejemplo con tus valores:
@@ -28,6 +35,8 @@ node tools/linkedin_backend/server.mjs
    cd packages/social_auth_linkedin/example
    flutter run --dart-define=LINKEDIN_CLIENT_ID=<client id> --dart-define=BACKEND_URL=<PUBLIC_URL>
    ```
+
+Si el navegador muestra `redirect_uri does not match the registered value`, la URL registrada en LinkedIn no es idéntica a `<PUBLIC_URL>/auth/linkedin/callback` (revisa `https`, la ruta y que no sobre una `/` al final). El backend imprime al arrancar la URL exacta que usa.
 
 El `.env` está en `.gitignore`: el secret nunca se sube ni viaja a la app.
 
