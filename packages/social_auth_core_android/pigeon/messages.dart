@@ -6,7 +6,8 @@ import 'package:pigeon/pigeon.dart';
   PigeonOptions(
     dartPackageName: 'social_auth_core_android',
     dartOut: 'lib/src/messages.g.dart',
-    kotlinOut: 'android/src/main/kotlin/dev/franciscodlx/social_auth_core_android/Messages.g.kt',
+    kotlinOut:
+        'android/src/main/kotlin/dev/franciscodlx/social_auth_core_android/Messages.g.kt',
     kotlinOptions: KotlinOptions(
       package: 'dev.franciscodlx.social_auth_core_android',
     ),

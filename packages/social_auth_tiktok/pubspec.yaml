@@ -1,13 +1,13 @@
 name: social_auth_tiktok
 description: Log in with TikTok (Login Kit web flow) for Flutter in the system browser, with the code exchange on your backend and no client secret in the app.
-version: 0.1.0
+version: 0.1.1
 repository: https://github.com/franciscodlx/flutter_social_login
 issue_tracker: https://github.com/franciscodlx/flutter_social_login/issues
 topics: [tiktok, oauth, login, authentication]
 resolution: workspace
 
 environment:
-  sdk: ^3.14.0
+  sdk: ^3.9.0
   flutter: '>=3.35.0'
 
 dependencies:

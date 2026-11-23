@@ -1,13 +1,13 @@
 name: social_auth_entra_native
 description: Microsoft Entra External ID native authentication for Flutter (sign-in, sign-up and password reset with your own screens), with the browser flow as fallback.
-version: 0.1.0
+version: 0.1.1
 repository: https://github.com/franciscodlx/flutter_social_login
 issue_tracker: https://github.com/franciscodlx/flutter_social_login/issues
 topics: [entra, microsoft, oauth, login, authentication]
 resolution: workspace
 
 environment:
-  sdk: ^3.14.0
+  sdk: ^3.9.0
   flutter: '>=3.35.0'
 
 dependencies:

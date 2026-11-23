@@ -120,8 +120,9 @@ void main() {
     });
 
     test('asks for confirmed_email only with users.email', () async {
-      await createXLogin(httpClient: serveX())
-          .signIn(options.copyWith(exchangeCode: true));
+      await createXLogin(
+        httpClient: serveX(),
+      ).signIn(options.copyWith(exchangeCode: true));
       expect(
         callsTo(xUserInfoEndpoint).single.url.toString(),
         '$xUserInfoEndpoint?user.fields=id,name,username,profile_image_url,verified',
@@ -228,8 +229,9 @@ void main() {
     });
 
     test('revokes the token on signOut', () async {
-      await createXLogin(httpClient: serveX())
-          .signOut(clientId: 'x-client', token: 'at-1');
+      await createXLogin(
+        httpClient: serveX(),
+      ).signOut(clientId: 'x-client', token: 'at-1');
       expect(requests.single.url.toString(), xRevocationEndpoint);
       expect(requests.single.bodyFields, {
         'token': 'at-1',

@@ -83,8 +83,9 @@ void main() {
 
     test('refuses to exchange the code on the device', () async {
       await expectLater(
-        createMercadoLibreLogin(country: MercadoLibreCountry.mx)
-            .signIn(options.copyWith(exchangeCode: true)),
+        createMercadoLibreLogin(
+          country: MercadoLibreCountry.mx,
+        ).signIn(options.copyWith(exchangeCode: true)),
         throwsA(
           isA<AuthException>().having(
             (e) => e.code,
@@ -101,8 +102,9 @@ void main() {
         'error': 'access_denied',
       });
       await expectLater(
-        createMercadoLibreLogin(country: MercadoLibreCountry.mx)
-            .signIn(options),
+        createMercadoLibreLogin(
+          country: MercadoLibreCountry.mx,
+        ).signIn(options),
         throwsA(
           isA<AuthException>().having(
             (e) => e.code,

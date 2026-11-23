@@ -1,7 +1,9 @@
 name: CI
+
+# Pull requests only. main takes changes through merged pull requests alone
+# (ruleset: PR required, these checks must pass), so the merged code already
+# passed here; release.yml publishes it without running the suite again.
 on:
-  push:
-    branches: [main]
   pull_request:
     branches: [main]
 
@@ -41,12 +43,51 @@ jobs:
           for tool in tools/*; do
             (cd "$tool" && node --test)
           done
+      # Same validation pub.dev runs on upload (CHANGELOG entry, size, files…):
+      # a package that would be rejected fails here, not after the merge.
+      - name: Packages publish cleanly (dry run)
+        run: |
+          for package in packages/*/; do
+            (cd "$package" && flutter pub publish --dry-run) || exit 1
+          done
+      - name: Versions that would be released
+        run: python3 -I .github/scripts/release.py
+
+  minimum:
+    name: Oldest supported Flutter (3.35)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: 3.35.x
+          channel: stable
+          cache: true
+      # What users install (the packages) must resolve and work on 3.35. The
+      # examples (material_ui) and the pigeon code generator (a dev dependency of
+      # the native implementations) need a newer SDK and never reach users, so
+      # this job leaves them out and resolves again without the lockfile.
+      - name: Keep only the published packages
+        run: |
+          rm -rf pubspec.lock packages/*/example packages/*/pigeon
+          sed -i '/\/example$/d' pubspec.yaml
+          sed -i '/^  pigeon:/d' packages/*/pubspec.yaml
+      - run: flutter pub get
+      - run: dart analyze packages
+      - name: Unit tests
+        run: |
+          for package in packages/*; do
+            if [ -d "$package/test" ]; then (cd "$package" && flutter test) || exit 1; fi
+          done
 
   android:
     name: Example ${{ matrix.example }} (Android)
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
+      # Nine builds at once from the same runner pool get "429 Too Many Requests"
+      # from Maven Central and broken NDK downloads.
+      max-parallel: 4
       matrix:
         example: [social_auth_core, social_auth_linkedin, social_auth_x, social_auth_mercadolibre, social_auth_twitch, social_auth_presets, social_auth_telegram, social_auth_tiktok, social_auth_entra_native]
     steps:
@@ -55,19 +96,35 @@ jobs:
         with:
           distribution: zulu
           java-version: '17'
+          # Gradle distribution and plugins: fewer downloads that can fail mid-run.
+          cache: gradle
       - uses: subosito/flutter-action@v2
         with:
           channel: stable
           cache: true
       - run: flutter pub get
-      - run: flutter build apk --debug
+      # Flutter retries a failed download after 100 ms, too soon for a rate limit
+      # or a corrupt NDK archive; wait and build again.
+      - name: Build example
         working-directory: packages/${{ matrix.example }}/example
+        run: |
+          for attempt in 1 2 3; do
+            flutter build apk --debug && exit 0
+            echo "::warning::Android build failed (attempt $attempt), retrying"
+            sleep $((attempt * 45))
+          done
+          exit 1
 
   ios:
     name: Example ${{ matrix.example }} (iOS)
     runs-on: macos-latest
+    timeout-minutes: 60
     strategy:
       fail-fast: false
+      # Hosted macOS runners are scarce (5 concurrent per account on the free
+      # plan, shared by every repo): nine at once leave jobs unassigned until
+      # GitHub gives up with "The job was not acquired by Runner".
+      max-parallel: 3
       matrix:
         example: [social_auth_core, social_auth_linkedin, social_auth_x, social_auth_mercadolibre, social_auth_twitch, social_auth_presets, social_auth_telegram, social_auth_tiktok, social_auth_entra_native]
     steps:

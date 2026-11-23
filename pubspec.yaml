@@ -3,7 +3,7 @@ description: Social login plugins for Flutter on a shared core (system browser, 
 publish_to: none
 
 environment:
-  sdk: ^3.14.0
+  sdk: ^3.9.0
 
 workspace:
   - packages/social_auth_core

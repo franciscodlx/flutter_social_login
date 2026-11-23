@@ -6,7 +6,8 @@ import 'package:pigeon/pigeon.dart';
   PigeonOptions(
     dartPackageName: 'social_auth_core_ios',
     dartOut: 'lib/src/messages.g.dart',
-    swiftOut: 'ios/social_auth_core_ios/Sources/social_auth_core_ios/Messages.g.swift',
+    swiftOut:
+        'ios/social_auth_core_ios/Sources/social_auth_core_ios/Messages.g.swift',
   ),
 )
 @HostApi()

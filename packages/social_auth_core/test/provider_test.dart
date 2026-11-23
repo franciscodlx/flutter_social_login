@@ -1,5 +1,7 @@
+import 'dart:async';
 import 'dart:convert';
 
+import 'package:fake_async/fake_async.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/testing.dart';
@@ -83,34 +85,37 @@ void main() {
     expect(requests, isEmpty);
   });
 
-  test('exchanges on-device as a public client, validates the id_token and maps the profile', () async {
-    final result = await ProviderLogin(
-      config,
-      httpClient: idp(),
-    ).signIn(options.copyWith(exchangeCode: true));
+  test(
+    'exchanges on-device as a public client, validates the id_token and maps the profile',
+    () async {
+      final result = await ProviderLogin(
+        config,
+        httpClient: idp(),
+      ).signIn(options.copyWith(exchangeCode: true));
 
-    final token = requests.first;
-    expect(token.method, 'POST');
-    expect(
-      token.headers['content-type'],
-      startsWith('application/x-www-form-urlencoded'),
-    );
-    expect(token.bodyFields, {
-      'grant_type': 'authorization_code',
-      'code': 'the-code',
-      'redirect_uri': 'myapp://callback',
-      'client_id': 'client-1',
-      'code_verifier': result.codeVerifier,
-    });
-    expect(token.bodyFields.containsKey('client_secret'), isFalse);
-    expect(requests.last.headers['authorization'], 'Bearer at-1');
+      final token = requests.first;
+      expect(token.method, 'POST');
+      expect(
+        token.headers['content-type'],
+        startsWith('application/x-www-form-urlencoded'),
+      );
+      expect(token.bodyFields, {
+        'grant_type': 'authorization_code',
+        'code': 'the-code',
+        'redirect_uri': 'myapp://callback',
+        'client_id': 'client-1',
+        'code_verifier': result.codeVerifier,
+      });
+      expect(token.bodyFields.containsKey('client_secret'), isFalse);
+      expect(requests.last.headers['authorization'], 'Bearer at-1');
 
-    expect(result.accessToken, 'at-1');
-    expect(result.refreshToken, 'rt-1');
-    expect(result.expiresIn, 3600);
-    expect(result.idTokenClaims?['sub'], 'user-123');
-    expect(result.profile, (id: 'user-123', email: 'ada@example.com'));
-  });
+      expect(result.accessToken, 'at-1');
+      expect(result.refreshToken, 'rt-1');
+      expect(result.expiresIn, 3600);
+      expect(result.idTokenClaims?['sub'], 'user-123');
+      expect(result.profile, (id: 'user-123', email: 'ada@example.com'));
+    },
+  );
 
   test('an id_token for another sign-in (nonce) is rejected', () async {
     await expectLater(
@@ -274,6 +279,31 @@ void main() {
       'scope': 'openid',
     });
     expect(tokens.accessToken, 'at-1');
+  });
+
+  test('a provider that does not answer fails with NETWORK', () {
+    fakeAsync((async) {
+      final silent = MockClient((_) => Completer<http.Response>().future);
+      Object? error;
+      refreshAccessToken(
+        tokenEndpoint: 'https://idp.test/token',
+        clientId: 'client-1',
+        refreshToken: 'rt-1',
+        client: silent,
+      ).catchError((Object e) {
+        error = e;
+        return const TokenResponse(raw: {});
+      });
+      async.elapse(const Duration(seconds: 29));
+      expect(error, isNull);
+      async.elapse(const Duration(seconds: 2));
+      expect(
+        error,
+        isA<AuthException>()
+            .having((e) => e.code, 'code', AuthErrorCode.network)
+            .having((e) => e.message, 'message', contains('did not answer')),
+      );
+    });
   });
 
   test('ProviderLoginController tracks loading, result and error', () async {
