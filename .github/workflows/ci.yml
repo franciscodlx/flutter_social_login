@@ -63,8 +63,16 @@ jobs:
           flutter-version: 3.35.x
           channel: stable
           cache: true
-      # The lockfile pins dev tools for the latest SDK; resolve again for 3.35.
-      - run: rm pubspec.lock && flutter pub get
+      # What users install (the packages) must resolve and work on 3.35. The
+      # examples (material_ui) and the pigeon code generator (a dev dependency of
+      # the native implementations) need a newer SDK and never reach users, so
+      # this job leaves them out and resolves again without the lockfile.
+      - name: Keep only the published packages
+        run: |
+          rm -rf pubspec.lock packages/*/example packages/*/pigeon
+          sed -i '/\/example$/d' pubspec.yaml
+          sed -i '/^  pigeon:/d' packages/*/pubspec.yaml
+      - run: flutter pub get
       - run: dart analyze packages
       - name: Unit tests
         run: |
@@ -77,6 +85,9 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
+      # Nine builds at once from the same runner pool get "429 Too Many Requests"
+      # from Maven Central and broken NDK downloads.
+      max-parallel: 4
       matrix:
         example: [social_auth_core, social_auth_linkedin, social_auth_x, social_auth_mercadolibre, social_auth_twitch, social_auth_presets, social_auth_telegram, social_auth_tiktok, social_auth_entra_native]
     steps:
@@ -92,8 +103,17 @@ jobs:
           channel: stable
           cache: true
       - run: flutter pub get
-      - run: flutter build apk --debug
+      # Flutter retries a failed download after 100 ms, too soon for a rate limit
+      # or a corrupt NDK archive; wait and build again.
+      - name: Build example
         working-directory: packages/${{ matrix.example }}/example
+        run: |
+          for attempt in 1 2 3; do
+            flutter build apk --debug && exit 0
+            echo "::warning::Android build failed (attempt $attempt), retrying"
+            sleep $((attempt * 45))
+          done
+          exit 1
 
   ios:
     name: Example ${{ matrix.example }} (iOS)
