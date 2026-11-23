@@ -109,35 +109,38 @@ void main() {
     },
   );
 
-  test('a provider error is reported; access_denied and cancelErrors mean CANCELLED', () async {
-    SocialAuthCorePlatform.instance = FakeBrowser.approving({
-      'error': 'access_denied',
-      'error_description': 'The user denied the request',
-    });
-    await expectLater(
-      authorize(request),
-      throwsAuth(AuthErrorCode.cancelled, 'access_denied'),
-    );
+  test(
+    'a provider error is reported; access_denied and cancelErrors mean CANCELLED',
+    () async {
+      SocialAuthCorePlatform.instance = FakeBrowser.approving({
+        'error': 'access_denied',
+        'error_description': 'The user denied the request',
+      });
+      await expectLater(
+        authorize(request),
+        throwsAuth(AuthErrorCode.cancelled, 'access_denied'),
+      );
 
-    SocialAuthCorePlatform.instance = FakeBrowser.approving({
-      'error': 'user_cancelled_login',
-    });
-    await expectLater(
-      authorize(request),
-      throwsAuth(AuthErrorCode.providerError, 'user_cancelled_login'),
-    );
-    await expectLater(
-      authorize(
-        const AuthorizeRequest(
-          authorizationEndpoint: 'https://idp.test/authorize',
-          clientId: 'client-1',
-          redirectUri: 'myapp://callback',
-          cancelErrors: ['user_cancelled_login'],
+      SocialAuthCorePlatform.instance = FakeBrowser.approving({
+        'error': 'user_cancelled_login',
+      });
+      await expectLater(
+        authorize(request),
+        throwsAuth(AuthErrorCode.providerError, 'user_cancelled_login'),
+      );
+      await expectLater(
+        authorize(
+          const AuthorizeRequest(
+            authorizationEndpoint: 'https://idp.test/authorize',
+            clientId: 'client-1',
+            redirectUri: 'myapp://callback',
+            cancelErrors: ['user_cancelled_login'],
+          ),
         ),
-      ),
-      throwsAuth(AuthErrorCode.cancelled, 'user_cancelled_login'),
-    );
-  });
+        throwsAuth(AuthErrorCode.cancelled, 'user_cancelled_login'),
+      );
+    },
+  );
 
   test(
     'rejects a wrong state, a missing code and a foreign redirect',

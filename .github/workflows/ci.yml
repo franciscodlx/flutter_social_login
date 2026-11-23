@@ -41,6 +41,34 @@ jobs:
           for tool in tools/*; do
             (cd "$tool" && node --test)
           done
+      # Same validation pub.dev runs on upload (CHANGELOG entry, size, files…):
+      # a package that would be rejected fails here, not after the merge.
+      - name: Packages publish cleanly (dry run)
+        run: |
+          for package in packages/*/; do
+            (cd "$package" && flutter pub publish --dry-run) || exit 1
+          done
+      - name: Versions that would be released
+        run: python3 -I .github/scripts/release.py
+
+  minimum:
+    name: Oldest supported Flutter (3.35)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: 3.35.x
+          channel: stable
+          cache: true
+      # The lockfile pins dev tools for the latest SDK; resolve again for 3.35.
+      - run: rm pubspec.lock && flutter pub get
+      - run: dart analyze packages
+      - name: Unit tests
+        run: |
+          for package in packages/*; do
+            if [ -d "$package/test" ]; then (cd "$package" && flutter test) || exit 1; fi
+          done
 
   android:
     name: Example ${{ matrix.example }} (Android)

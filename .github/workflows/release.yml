@@ -1,0 +1,35 @@
+name: Release
+
+# Runs after CI passes on main. For each package whose pubspec version is not on
+# pub.dev yet, pushes the tag `<package>-v<version>` (publish.yml publishes it) in
+# dependency order. To release: bump `version:` and add the CHANGELOG entry in
+# your PR, then merge it.
+#
+# Tags pushed with GITHUB_TOKEN do not start workflows, so the push goes through
+# a deploy key with write access (secret RELEASE_DEPLOY_KEY).
+on:
+  workflow_run:
+    workflows: [CI]
+    types: [completed]
+    branches: [main]
+
+permissions: {}
+
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+jobs:
+  tag:
+    name: Tag new versions
+    if: github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.event == 'push'
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: ${{ github.event.workflow_run.head_sha }}
+          ssh-key: ${{ secrets.RELEASE_DEPLOY_KEY }}
+      - run: python3 -I .github/scripts/release.py --push

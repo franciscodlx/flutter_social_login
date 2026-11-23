@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
@@ -47,6 +48,10 @@ int? _int(Object? value) => switch (value) {
   _ => null,
 };
 
+/// How long a token, userinfo or revoke request may take before it fails with
+/// [AuthErrorCode.network].
+const _requestTimeout = Duration(seconds: 30);
+
 /// Sends [request] and returns its JSON object, mapping transport failures to
 /// [AuthErrorCode.network] and provider errors to [AuthErrorCode.providerError].
 Future<Map<String, dynamic>> _send(
@@ -58,7 +63,13 @@ Future<Map<String, dynamic>> _send(
   final effective = client ?? http.Client();
   final http.Response response;
   try {
-    response = await request(effective);
+    response = await request(effective).timeout(_requestTimeout);
+  } on TimeoutException catch (error) {
+    throw AuthException(
+      AuthErrorCode.network,
+      '$url did not answer within ${_requestTimeout.inSeconds} s',
+      cause: error,
+    );
   } on Object catch (error) {
     throw AuthException(
       AuthErrorCode.network,

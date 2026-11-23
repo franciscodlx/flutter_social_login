@@ -1,0 +1,44 @@
+name: Publish to pub.dev
+
+# Started by the tags that release.yml pushes (`social_auth_core-v0.1.1`). pub.dev
+# checks the tag against the pattern set in each package's admin page
+# (`<package>-v{{version}}`) and authenticates the run with OIDC, no token.
+on:
+  push:
+    tags: ['social_auth_*-v[0-9]+.[0-9]+.[0-9]+*']
+
+permissions: {}
+
+jobs:
+  publish:
+    name: ${{ github.ref_name }}
+    runs-on: ubuntu-latest
+    environment: pub.dev
+    permissions:
+      contents: read
+      id-token: write # pub.dev automated publishing (OIDC)
+    steps:
+      - uses: actions/checkout@v7
+      - name: Package from the tag
+        id: package
+        run: |
+          tag="$GITHUB_REF_NAME"
+          name="${tag%-v*}"
+          version="${tag##*-v}"
+          dir="packages/$name"
+          if [ ! -f "$dir/pubspec.yaml" ]; then
+            echo "::error::No package $name in packages/"; exit 1
+          fi
+          if ! grep -qx "version: $version" "$dir/pubspec.yaml"; then
+            echo "::error::$dir/pubspec.yaml is not at version $version"; exit 1
+          fi
+          echo "dir=$dir" >> "$GITHUB_OUTPUT"
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: true
+      - run: flutter pub get
+      # Requests the pub.dev OIDC token; right before publishing so it is still fresh.
+      - uses: dart-lang/setup-dart@v1
+      - run: flutter pub publish --force
+        working-directory: ${{ steps.package.outputs.dir }}
