@@ -61,7 +61,7 @@ dart run pigeon --input pigeon/messages.dart
 Se publica solo al hacer merge a `main`:
 
 1. En tu PR, sube `version:` en el `pubspec.yaml` de cada paquete que cambió y agrega la entrada en su `CHANGELOG.md`. El CI corre `flutter pub publish --dry-run` en todos los paquetes (falla si falta la entrada del CHANGELOG, por ejemplo) y lista las versiones que se publicarían.
-2. Al hacer merge, cuando el CI de `main` pasa, el workflow `Release` empuja el tag `<paquete>-v<versión>` de cada versión que aún no está en pub.dev, en orden de dependencias, y espera a que aparezca antes de seguir con el siguiente.
+2. Al hacer merge, el workflow `Release` empuja el tag `<paquete>-v<versión>` de cada versión que aún no está en pub.dev, en orden de dependencias, y espera a que aparezca antes de seguir con el siguiente.
 3. Cada tag dispara `Publish to pub.dev`, que publica con la publicación automática de pub.dev (OIDC, sin token).
 
 Si un paquete depende de una versión nueva de otro del repo (por ejemplo, un proveedor que necesita `social_auth_core` 0.2.0), sube ambos en el mismo PR. Un paquete **nuevo** se publica la primera vez a mano (`flutter pub publish`), y después se activa su publicación automática en pub.dev.
