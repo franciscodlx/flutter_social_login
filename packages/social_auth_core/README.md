@@ -1,5 +1,7 @@
 # social_auth_core
 
+<p align="center"><img src="https://raw.githubusercontent.com/franciscodlx/flutter_social_login/main/.github/assets/demo.gif" width="260" alt="Demo: iniciar sesión en el navegador del sistema y volver a la app"></p>
+
 Núcleo compartido de los plugins de login social para Flutter (iOS y Android): OAuth 2.0 authorization code + PKCE en el navegador del sistema, sin WebView y sin `clientSecret` en la app.
 
 Úsalo directamente con cualquier proveedor OAuth 2.0 / OpenID Connect, o a través de un paquete de proveedor de la familia.
@@ -23,6 +25,8 @@ defaultConfig {
     manifestPlaceholders["authCoreRedirectScheme"] = "miapp"
 }
 ```
+
+En release, tu `android/app/src/main/AndroidManifest.xml` también necesita `<uses-permission android:name="android.permission.INTERNET" />` para llegar a tu backend o al token endpoint: Flutter solo lo agrega en debug.
 
 iOS no necesita configuración. Detalles: [doc/android.md](doc/android.md), [doc/ios.md](doc/ios.md).
 
