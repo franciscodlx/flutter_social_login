@@ -94,8 +94,13 @@ jobs:
   ios:
     name: Example ${{ matrix.example }} (iOS)
     runs-on: macos-latest
+    timeout-minutes: 60
     strategy:
       fail-fast: false
+      # Hosted macOS runners are scarce (5 concurrent per account on the free
+      # plan, shared by every repo): nine at once leave jobs unassigned until
+      # GitHub gives up with "The job was not acquired by Runner".
+      max-parallel: 3
       matrix:
         example: [social_auth_core, social_auth_linkedin, social_auth_x, social_auth_mercadolibre, social_auth_twitch, social_auth_presets, social_auth_telegram, social_auth_tiktok, social_auth_entra_native]
     steps:
